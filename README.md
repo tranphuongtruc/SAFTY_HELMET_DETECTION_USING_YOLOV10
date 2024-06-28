@@ -70,11 +70,20 @@ This project detects whether workers are wearing safety helmets or not.
     !wget https://github.com/THU-MIG/yolov10/releases/download/v1.1/yolov10n.pt
     ```
 
-3. *Save your results after training the model*
+3. *See your results after training the model*
+
     ```sh
-    from ultralytics import YOLOv10
-    MODEL_PATH = YOLOv10('/content/yolov10/runs/detect/train4/weights/best.pt')
-    IMG_PATH = '<path_to_your_image>'
-    result = model(source=IMG_PATH)[0]
-    result.save('<path_to_save_your_results>')
+    from google.colab.patches import cv2_imshow
+    TRAINED_MODEL_PATH = 'runs/detect/train/weights/best.pt'
+    model = YOLOv10(TRAINED_MODEL_PATH)
+    IMAGE_PATH = 'your_image_path'
+    CONF_THRESHOLD = 0.3
+    IMG_SIZE = 640
+    results = model.predict(source=IMAGE_PATH,
+                            imgsz=IMG_SIZE,
+                            conf=CONF_THRESHOLD)
+    print(results[0].boxes)
+    annotated_img = results[0].plot()
+    cv2_imshow(annotated_img)
     ```
+    
